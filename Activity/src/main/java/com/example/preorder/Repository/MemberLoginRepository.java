@@ -1,8 +1,8 @@
 package com.example.preorder.Repository;
 
-import com.example.preorder.Entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.lang.reflect.Member;
 import java.util.Optional;
 
 public interface MemberLoginRepository extends JpaRepository<Member, Long> {

@@ -12,7 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Getter
-public class Board {
+@Builder
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
@@ -21,8 +22,12 @@ public class Board {
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Lob // 대용량 데이터
+    @Lob
     private String content;
+
+    private Long price;
+
+    private Long stock;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -30,9 +35,20 @@ public class Board {
     @Column(name = "userId")
     private Long memberId; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
 
-    @OneToMany(mappedBy = "board")
-    private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "board")
-    private Set<Likes> likesSet = new HashSet<>();
+    public void update(String title, String content, Long price){
+        this.title=title;
+        this.content=content;
+        this.price=price;
+    }
+
+    public void subStock(Long quantity){
+        this.stock-=quantity;
+    }
+
+    public void addStock(Long quantity){
+        this.stock+=quantity;
+    }
+
+
 }
