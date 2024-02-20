@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 8215
+      MYSQL_DATABASE: pre-order-db
+      MYSQL_USER: jin
+      MYSQL_PASSWORD: 8215
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/pre-order-db
+      SPRING_DATASOURCE_USERNAME: jin
+      SPRING_DATASOURCE_PASSWORD: 8215
+
