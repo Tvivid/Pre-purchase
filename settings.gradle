@@ -1,1 +1,5 @@
+rootProject.name = 'pre-purchase'
+include 'Product'
+include 'Purchase'
+include 'User'
 

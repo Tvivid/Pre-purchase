@@ -8,6 +8,8 @@ import com.example.preorder.Feign.NewsFeedClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,6 +76,13 @@ public class ProductService {
 
         product.addStock(quantity);
     }
+
+
+    public Page<Product> productList(Pageable pageable){
+        return productRepository.findAll(pageable);
+    };
+
+
 
 
 
