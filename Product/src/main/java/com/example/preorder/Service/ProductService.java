@@ -82,6 +82,12 @@ public class ProductService {
         return productRepository.findAll(pageable);
     };
 
+    public Product productInfo(Long productId){
+        Product product= productRepository.findById(productId)
+                .orElseThrow(()->new CustomException());
+        return product;
+    }
+
 
 
 
