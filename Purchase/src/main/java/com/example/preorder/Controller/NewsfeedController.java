@@ -3,7 +3,7 @@ package com.example.preorder.Controller;
 
 import com.example.preorder.Dto.ActivityDTO;
 import com.example.preorder.Entity.Activity;
-import com.example.preorder.Service.NewsfeedService;
+import com.example.preorder.Service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +17,18 @@ import java.util.List;
 public class NewsfeedController {
 
     @Autowired
-    private NewsfeedService newsfeedService;
+    private PurchaseService purchaseService;
 
 
     @GetMapping("/newsfeed")
     public ResponseEntity<List<Activity>> NewsFeed(@RequestHeader("Authorization") String accessToken){
         accessToken=accessToken.substring(7);
-        List<Activity> activities = newsfeedService.newsfeed(accessToken);
+        List<Activity> activities = purchaseService.newsfeed(accessToken);
         return ResponseEntity.ok(activities);
     }
 
     @PostMapping("/create")
     void createActivity(ActivityDTO activity){
-        newsfeedService.create(activity);
+        purchaseService.create(activity);
     };
 }

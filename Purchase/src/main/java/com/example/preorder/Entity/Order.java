@@ -1,6 +1,8 @@
 package com.example.preorder.Entity;
 
+import com.example.preorder.Entity.type.PurchaseStatus;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,28 +11,27 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @Getter
-@Setter
 @Entity
-public class Comment {
+public class Order {
 
     @Id
     @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
-    private String content;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardId")
-    private Board board;
-
+    @Column(name = "productId")
+    private Long productId;
 
     @Column(name = "memberId")
     private Long memberId;
 
-    @OneToMany(mappedBy = "comment")
-    private Set<Likes> likesSet = new HashSet<>();
+    @Column(name="quantity")
+    private Long quantity;
+
+    @Enumerated(EnumType.STRING)
+    private PurchaseStatus status;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

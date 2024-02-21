@@ -2,24 +2,24 @@ package com.example.preorder.Service;
 
 
 import com.example.preorder.Dto.ActivityDTO;
+import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Entity.*;
+import com.example.preorder.Entity.type.PurchaseStatus;
 import com.example.preorder.Feign.ActivityFeignClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.ActivityRepository;
+import com.example.preorder.Repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class NewsfeedService {
+public class PurchaseService {
 
-
+    private OrderRepository orderRepository;
     private UserFeignClient userFeignClient;
     private ActivityFeignClient activityFeignClient;
 
@@ -40,16 +40,24 @@ public class NewsfeedService {
     }
 
 
-    public void create(ActivityDTO activityDTO){
-        Activity activity = new Activity();
+    public void create(String token, OrderDTO orderDTO){
 
-        activity.setType(activityDTO.getType());
-        activity.setContent(activityDTO.getContent());
-        activity.setUserName(activityDTO.getUserName());
-        activity.setCreatedAt(activityDTO.getCreatedAt());
+        Long memberId = userFeignClient.getMember(token);
 
-        activityRepository.save(activity);
+
+        Order order = Order.builder()
+                        .memberId(memberId)
+                                .productId(orderDTO.getProductId())
+                                        .quantity(orderDTO.getQuantity())
+                                                .status(PurchaseStatus.processing)
+                                                        .build();
+        orderRepository.save(order);
+
+
     }
+
+
+
 
 
 
