@@ -40,6 +40,10 @@ public class Order {
     private LocalDateTime deletedAt;
 
 
+    public void updateStatus(PurchaseStatus purchaseStatus){
+        this.status=purchaseStatus;
+    }
+
     public void cancel(){
         this.deletedAt=LocalDateTime.now();
     }

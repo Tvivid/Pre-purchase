@@ -1,8 +1,6 @@
 package com.example.preorder.Controller;
 
 
-import com.example.preorder.Dto.ActivityDTO;
-import com.example.preorder.Entity.Activity;
 import com.example.preorder.Service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

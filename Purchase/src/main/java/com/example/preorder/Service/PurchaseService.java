@@ -7,16 +7,12 @@ import com.example.preorder.Entity.type.PurchaseStatus;
 import com.example.preorder.Exception.CustomException;
 import com.example.preorder.Feign.ProductClient;
 import com.example.preorder.Feign.UserFeignClient;
-import com.example.preorder.Repository.ActivityRepository;
 import com.example.preorder.Repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +36,7 @@ public class PurchaseService {
                         .memberId(memberId)
                                 .productId(orderDTO.getProductId())
                                         .quantity(orderDTO.getQuantity())
-                                                .status(PurchaseStatus.processing)
+                                                .status(PurchaseStatus.previous)
                                                         .build();
         orderRepository.save(order);
 
@@ -74,9 +70,35 @@ public class PurchaseService {
         Order order=orderRepository.findById(orderId)
                 .orElseThrow(()->new CustomException());
         order.cancel();
+
+        //재고량 복구
         Long productId=order.getProductId();
         Long quantity=order.getQuantity();
         productClient.addStock(productId, quantity);
+
+    }
+
+
+    public String payment(Long orderId){
+        Order order=orderRepository.findById(orderId)
+                .orElseThrow(()->new CustomException());
+
+        order.updateStatus(PurchaseStatus.processing);
+
+        if(Math.random()>0.2){
+            order.updateStatus(PurchaseStatus.completed);
+            return "결제 완료";
+        }
+        order.updateStatus(PurchaseStatus.previous);
+        order.cancel();
+
+        //재고량 복구
+        Long productId=order.getProductId();
+        Long quantity=order.getQuantity();
+        productClient.addStock(productId, quantity);
+
+        return "잔액이 부족합니다";
+        
 
     }
 
