@@ -55,6 +55,17 @@ public class PurchaseService {
         productClient.subStock(productId, quantity);
     }
 
+    public void cancelOrder(Long orderId){
+
+        Order order=orderRepository.findById(orderId)
+                .orElseThrow(()->new CustomException());
+        order.cancel();
+        Long productId=order.getProductId();
+        Long quantity=order.getQuantity();
+        productClient.addStock(productId, quantity);
+
+    }
+
 
 
 

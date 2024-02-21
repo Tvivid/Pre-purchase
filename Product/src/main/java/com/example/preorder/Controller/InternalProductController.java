@@ -24,9 +24,15 @@ public class InternalProductController {
         return stock;
     };
 
-    @PostMapping
+    @PostMapping("/subStock")
     void subStock(Long productId, Long quantity){
         productService.subStock(productId, quantity);
+
+    };
+
+    @PostMapping("/addStock")
+    void addStock(Long productId, Long quantity){
+        productService.addStock(productId, quantity);
 
     };
 }

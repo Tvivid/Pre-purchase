@@ -13,6 +13,9 @@ public interface ProductClient {
     @GetMapping
     Long checkStock(Long productId);
 
-    @PostMapping
+    @PostMapping("/subStock")
     void subStock(Long productId, Long quantity);
+
+    @PostMapping("/addStock")
+    void addStock(Long productId, Long quantity);
 }

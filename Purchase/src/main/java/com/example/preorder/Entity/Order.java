@@ -21,10 +21,10 @@ public class Order {
     @Column(name = "comment_id")
     private Long id;
 
-    @Column(name = "productId")
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "memberId")
+    @Column(name = "member_id")
     private Long memberId;
 
     @Column(name="quantity")
@@ -35,6 +35,14 @@ public class Order {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+
+    public void cancel(){
+        this.deletedAt=LocalDateTime.now();
+    }
 
 
 
