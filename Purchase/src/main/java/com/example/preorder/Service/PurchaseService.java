@@ -10,7 +10,10 @@ import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.ActivityRepository;
 import com.example.preorder.Repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -54,6 +57,17 @@ public class PurchaseService {
         //재고량 감소
         productClient.subStock(productId, quantity);
     }
+
+    //주문 리스트
+    @Transactional
+    public Page<Order> OrderList(String token, Pageable pageable){
+
+        Long member = userFeignClient.getMember(token);
+
+        Page<Order> orders = orderRepository.findByMemberId(member, pageable);
+        return orders;
+    }
+
 
     public void cancelOrder(Long orderId){
 
