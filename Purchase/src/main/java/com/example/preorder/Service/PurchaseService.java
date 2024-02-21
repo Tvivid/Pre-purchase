@@ -1,11 +1,11 @@
 package com.example.preorder.Service;
 
 
-import com.example.preorder.Dto.ActivityDTO;
 import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Entity.*;
 import com.example.preorder.Entity.type.PurchaseStatus;
-import com.example.preorder.Feign.ActivityFeignClient;
+import com.example.preorder.Exception.CustomException;
+import com.example.preorder.Feign.ProductClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.ActivityRepository;
 import com.example.preorder.Repository.OrderRepository;
@@ -21,28 +21,16 @@ public class PurchaseService {
 
     private OrderRepository orderRepository;
     private UserFeignClient userFeignClient;
-    private ActivityFeignClient activityFeignClient;
-
-    private ActivityRepository activityRepository;
-
-    public List<Activity> newsfeed(String token){
+    private ProductClient productClient;
 
 
-        Long memberId = userFeignClient.getMember(token);
 
-        Set<Long> follows = activityFeignClient.getFollowing(memberId);
-
-
-        List<Activity> activities = activityRepository.findByUserNames(follows);
-
-        return activities;
-
-    }
-
-
+    //주문 생성
     public void create(String token, OrderDTO orderDTO){
 
         Long memberId = userFeignClient.getMember(token);
+
+        stockValidation(orderDTO.getProductId(), orderDTO.getQuantity());
 
 
         Order order = Order.builder()
@@ -54,6 +42,17 @@ public class PurchaseService {
         orderRepository.save(order);
 
 
+    }
+
+    //재고량 유효성 검사
+    public void stockValidation(Long productId, Long quantity){
+        Long stock= productClient.checkStock(productId);
+
+        if(stock<quantity){
+            throw new CustomException();
+        }
+        //재고량 감소
+        productClient.subStock(productId, quantity);
     }
 
 
