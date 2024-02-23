@@ -1,10 +1,8 @@
 package com.example.preorder.Service;
 
-import com.example.preorder.Dto.Activity;
 import com.example.preorder.Dto.ProductDTO;
 import com.example.preorder.Entity.Product;
 import com.example.preorder.Exception.CustomException;
-import com.example.preorder.Feign.NewsFeedClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -78,12 +76,15 @@ public class ProductService {
     }
 
     @Transactional
-    public Page<Product> productList(Pageable pageable){
+    public Page<Product> productList(String token, Pageable pageable){
+        Long member = userFeignClient.getMember(token);
+
         return productRepository.findAll(pageable);
     };
 
     @Transactional
-    public Product productInfo(Long productId){
+    public Product productInfo(String token,Long productId){
+        Long member = userFeignClient.getMember(token);
         Product product= productRepository.findById(productId)
                 .orElseThrow(()->new CustomException());
         return product;

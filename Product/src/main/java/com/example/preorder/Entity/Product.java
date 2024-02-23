@@ -32,7 +32,7 @@ public class Product {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "userId")
+    @Column(name = "member_id")
     private Long memberId; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
 
 
