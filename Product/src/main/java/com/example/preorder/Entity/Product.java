@@ -29,6 +29,10 @@ public class Product {
 
     private Long stock;
 
+    private boolean reserved;
+
+    private LocalDateTime reservation;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

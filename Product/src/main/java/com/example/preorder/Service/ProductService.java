@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -31,12 +33,16 @@ public class ProductService {
         String content= productDTO.getContent();
         Long price= productDTO.getPrice();
         Long stock = productDTO.getStock();
+        LocalDateTime reservation = productDTO.getReservation();
+        boolean reserved = productDTO.isReserved();
         Product product = Product.builder()
-                        .title(title)
-                                .content(content)
-                                        .price(price)
-                                                .stock(stock)
-                                                        .build();
+                .title(title)
+                .content(content)
+                .price(price)
+                .stock(stock)
+                .reserved(reserved)
+                .reservation(reservation)
+                .build();
 
         productRepository.save(product);
 
