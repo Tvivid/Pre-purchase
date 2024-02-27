@@ -2,6 +2,7 @@ package com.example.preorder.Controller;
 
 
 import com.example.preorder.Dto.OrderDTO;
+import com.example.preorder.Dto.PaymentDTO;
 import com.example.preorder.Entity.Orders;
 import com.example.preorder.Service.PurchaseService;
 import lombok.RequiredArgsConstructor;
@@ -43,15 +44,15 @@ public class PurchaseController {
 
     //주문 취소
     @DeleteMapping
-    public ResponseEntity<String>  cancelOrder(@RequestBody Long orderId){
-        purchaseService.cancelOrder(orderId);
+    public ResponseEntity<String>  cancelOrder(@RequestBody PaymentDTO paymentDTO){
+        purchaseService.cancelOrder(paymentDTO.getOrderId());
         return ResponseEntity.ok("주문을 취소하였습니다.");
     }
 
     //결제
     @PostMapping("/payment")
-    public ResponseEntity<String> payment(@RequestBody Long orderId){
-        purchaseService.payment(orderId);
-        return ResponseEntity.ok("결제를 완료하였습니다.");
+    public ResponseEntity<String> payment(@RequestBody PaymentDTO paymentDTO){
+        String result=purchaseService.payment(paymentDTO.getOrderId());
+        return ResponseEntity.ok(result);
     }
 }
