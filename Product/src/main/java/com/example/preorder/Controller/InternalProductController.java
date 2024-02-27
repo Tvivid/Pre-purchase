@@ -18,7 +18,7 @@ public class InternalProductController {
 
 
     @GetMapping
-    Long checkStock(@RequestBody Long productId){
+    Long checkStock(@RequestParam Long productId){
         Long stock = productService.checkStock(productId);
         return stock;
     };
