@@ -2,7 +2,7 @@ package com.example.preorder.Controller;
 
 
 import com.example.preorder.Dto.OrderDTO;
-import com.example.preorder.Entity.Order;
+import com.example.preorder.Entity.Orders;
 import com.example.preorder.Service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,13 +23,13 @@ public class PurchaseController {
 
     //주문 정보 리스트 출력
     @GetMapping
-    public ResponseEntity<Page<Order>> NewsFeed(@RequestHeader("Authorization") String accessToken){
+    public ResponseEntity<Page<Orders>> NewsFeed(@RequestHeader("Authorization") String accessToken){
         accessToken=accessToken.substring(7);
 
         int page = 0; // 첫 번째 페이지
         int size = 10; // 페이지 당 항목 수
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<Order> orders = purchaseService.OrderList(accessToken,pageable);
+        Page<Orders> orders = purchaseService.OrderList(accessToken,pageable);
         return ResponseEntity.ok(orders);
     }
 

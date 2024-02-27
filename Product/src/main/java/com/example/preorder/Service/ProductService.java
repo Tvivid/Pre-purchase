@@ -1,5 +1,6 @@
 package com.example.preorder.Service;
 
+import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Dto.ProductDTO;
 import com.example.preorder.Entity.Product;
 import com.example.preorder.Exception.CustomException;
@@ -66,19 +67,19 @@ public class ProductService {
     }
 
     @Transactional
-    public void subStock(Long productId, Long quantity){
-        Product product = productRepository.findById(productId)
+    public void subStock(OrderDTO orderDTO){
+        Product product = productRepository.findById(orderDTO.getProductId())
                 .orElseThrow(()->new CustomException());
 
-        product.subStock(quantity);
+        product.subStock(orderDTO.getQuantity());
     }
 
     @Transactional
-    public void addStock(Long productId, Long quantity){
-        Product product = productRepository.findById(productId)
+    public void addStock(OrderDTO orderDTO){
+        Product product = productRepository.findById(orderDTO.getProductId())
                 .orElseThrow(()->new CustomException());
 
-        product.addStock(quantity);
+        product.addStock(orderDTO.getQuantity());
     }
 
     @Transactional

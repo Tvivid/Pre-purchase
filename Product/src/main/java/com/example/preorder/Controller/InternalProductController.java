@@ -1,12 +1,11 @@
 package com.example.preorder.Controller;
 
+import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/internal/product")
@@ -19,20 +18,20 @@ public class InternalProductController {
 
 
     @GetMapping
-    Long checkStock(Long productId){
+    Long checkStock(@RequestBody Long productId){
         Long stock = productService.checkStock(productId);
         return stock;
     };
 
     @PostMapping("/subStock")
-    void subStock(Long productId, Long quantity){
-        productService.subStock(productId, quantity);
+    void subStock(@RequestBody OrderDTO orderDTO){
+        productService.subStock(orderDTO);
 
     };
 
     @PostMapping("/addStock")
-    void addStock(Long productId, Long quantity){
-        productService.addStock(productId, quantity);
+    void addStock(@RequestBody OrderDTO orderDTO){
+        productService.addStock(orderDTO);
 
     };
 }

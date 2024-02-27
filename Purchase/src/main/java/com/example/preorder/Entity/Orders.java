@@ -4,17 +4,14 @@ import com.example.preorder.Entity.type.PurchaseStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Builder
 @Getter
 @Entity
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue

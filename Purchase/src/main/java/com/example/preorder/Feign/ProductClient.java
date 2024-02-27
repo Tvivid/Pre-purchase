@@ -1,8 +1,10 @@
 package com.example.preorder.Feign;
 
+import com.example.preorder.Dto.OrderDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Set;
 
@@ -11,11 +13,11 @@ public interface ProductClient {
 
 
     @GetMapping
-    Long checkStock(Long productId);
+    Long checkStock(@RequestBody Long productId);
 
     @PostMapping("/subStock")
-    void subStock(Long productId, Long quantity);
+    void subStock(@RequestBody OrderDTO orderDTO);
 
     @PostMapping("/addStock")
-    void addStock(Long productId, Long quantity);
+    void addStock(@RequestBody OrderDTO orderDTO);
 }

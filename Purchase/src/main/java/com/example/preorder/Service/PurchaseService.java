@@ -9,6 +9,7 @@ import com.example.preorder.Feign.ProductClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PurchaseService {
 
-    private OrderRepository orderRepository;
-    private UserFeignClient userFeignClient;
-    private ProductClient productClient;
+    private final OrderRepository orderRepository;
+    private final UserFeignClient userFeignClient;
+    private final ProductClient productClient;
 
 
 
@@ -29,73 +30,73 @@ public class PurchaseService {
 
         Long memberId = userFeignClient.getMember(token);
 
-        stockValidation(orderDTO.getProductId(), orderDTO.getQuantity());
+        stockValidation(orderDTO);
 
 
-        Order order = Order.builder()
+        Orders orders = Orders.builder()
                         .memberId(memberId)
                                 .productId(orderDTO.getProductId())
                                         .quantity(orderDTO.getQuantity())
                                                 .status(PurchaseStatus.previous)
                                                         .build();
-        orderRepository.save(order);
+        orderRepository.save(orders);
 
 
     }
 
     //재고량 유효성 검사
-    public void stockValidation(Long productId, Long quantity){
-        Long stock= productClient.checkStock(productId);
+    public void stockValidation(OrderDTO orderDTO){
+        Long stock= productClient.checkStock(orderDTO.getProductId());
 
-        if(stock<quantity){
+        if(stock< orderDTO.getQuantity()){
             throw new CustomException();
         }
         //재고량 감소
-        productClient.subStock(productId, quantity);
+        productClient.subStock(orderDTO);
     }
 
     //주문 리스트
     @Transactional
-    public Page<Order> OrderList(String token, Pageable pageable){
+    public Page<Orders> OrderList(String token, Pageable pageable){
 
         Long member = userFeignClient.getMember(token);
 
-        Page<Order> orders = orderRepository.findByMemberId(member, pageable);
+        Page<Orders> orders = orderRepository.findByMemberId(member, pageable);
         return orders;
     }
 
 
     public void cancelOrder(Long orderId){
 
-        Order order=orderRepository.findById(orderId)
+        Orders orders =orderRepository.findById(orderId)
                 .orElseThrow(()->new CustomException());
-        order.cancel();
+        orders.cancel();
+
+        OrderDTO orderDTO=OrderDTO.entityToOrderDTO(orders);
 
         //재고량 복구
-        Long productId=order.getProductId();
-        Long quantity=order.getQuantity();
-        productClient.addStock(productId, quantity);
+        productClient.addStock(orderDTO);
 
     }
 
 
     public String payment(Long orderId){
-        Order order=orderRepository.findById(orderId)
+        Orders orders =orderRepository.findById(orderId)
                 .orElseThrow(()->new CustomException());
 
-        order.updateStatus(PurchaseStatus.processing);
+        orders.updateStatus(PurchaseStatus.processing);
 
         if(Math.random()>0.2){
-            order.updateStatus(PurchaseStatus.completed);
+            orders.updateStatus(PurchaseStatus.completed);
             return "결제 완료";
         }
-        order.updateStatus(PurchaseStatus.previous);
-        order.cancel();
+        orders.updateStatus(PurchaseStatus.previous);
+        orders.cancel();
+
+        OrderDTO orderDTO=OrderDTO.entityToOrderDTO(orders);
 
         //재고량 복구
-        Long productId=order.getProductId();
-        Long quantity=order.getQuantity();
-        productClient.addStock(productId, quantity);
+        productClient.addStock(orderDTO);
 
         return "잔액이 부족합니다";
         
