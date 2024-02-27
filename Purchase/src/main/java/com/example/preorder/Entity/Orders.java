@@ -2,15 +2,18 @@ package com.example.preorder.Entity;
 
 import com.example.preorder.Entity.type.PurchaseStatus;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Orders {
 
     @Id
@@ -35,6 +38,15 @@ public class Orders {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Builder
+    public Orders(Long productId, Long memberId, Long quantity, PurchaseStatus status,
+                  LocalDateTime deletedAt) {
+        this.productId = productId;
+        this.memberId = memberId;
+        this.quantity = quantity;
+        this.status = status;
+    }
 
 
     public void updateStatus(PurchaseStatus purchaseStatus){
