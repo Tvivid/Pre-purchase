@@ -1,29 +1,30 @@
-# http_request_tool.py
-
 import requests
-import threading
 from concurrent.futures import ThreadPoolExecutor
 
-def send_http_request(url):
+def send_http_request(url, user_data):
     try:
-        response = requests.get(url)
-        print(f"Request to {url} completed with status code {response.status_code}")
+        response = requests.post(url, json=user_data)
+        print(f"Request for user {user_data['username']} completed with status code {response.status_code}")
     except Exception as e:
-        print(f"Error sending request to {url}: {e}")
+        print(f"Error sending request for user {user_data['username']}: {e}")
+
+def create_user_data(user_id):
+    # 유저 정보 생성 로직
+    return {
+        "username": f"user{user_id}",
+        "email": f"user{user_id}@example.com",
+        "password": "password123"
+    }
 
 def main():
-    # Set the number of concurrent requests (N)
-    num_requests = 10
+    num_users = 1
+    target_url = "http://localhost:8083/v1/signup" # 유저 생성 API 엔드포인트
 
-    # Set the target URL
-    target_url = "https://example.com"
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        # 각 유저마다 고유한 정보를 가진 요청을 생성
+        tasks = [executor.submit(send_http_request, target_url, create_user_data(i)) for i in range(1, num_users + 1)]
 
-    # Create a ThreadPoolExecutor to send concurrent requests
-    with ThreadPoolExecutor(max_workers=num_requests) as executor:
-        # Use a list comprehension to create a list of tasks
-        tasks = [executor.submit(send_http_request, target_url) for _ in range(num_requests)]
-
-        # Wait for all tasks to complete
+        # 모든 요청이 완료될 때까지 기다림
         for future in tasks:
             future.result()
 

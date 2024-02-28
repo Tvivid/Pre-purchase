@@ -45,11 +45,11 @@ public class MemberService {
         member.getRoles().add("USER");
         memberRepository.save(member);
 
-
-        String subject = "회원가입 인증";
-        String from = "tjsaud3250@naver.com";
-        String text = "회원가입을 완료하려면 아래 링크를 클릭하세요: http://localhost:8081/v1/verify?email="+ member.getEmail()+"&token=" + member.getVerificationToken();
-        mailService.sendEmail(member.getEmail(), from, subject, text);
+        //테스트에서 메일인증제외
+//        String subject = "회원가입 인증";
+//        String from = "tjsaud3250@naver.com";
+//        String text = "회원가입을 완료하려면 아래 링크를 클릭하세요: http://localhost:8081/v1/verify?email="+ member.getEmail()+"&token=" + member.getVerificationToken();
+//        mailService.sendEmail(member.getEmail(), from, subject, text);
     }
 
     @Transactional
@@ -82,9 +82,12 @@ public class MemberService {
 
         Member member=memberLoginRepository.findByEmail(email)
                 .orElseThrow(NullPointerException::new);
-        if(!member.isVerificationState()){
-            throw new IllegalStateException("이메일 인증을 진행해주세요");
-        }
+
+        //테스트에서 메일인증 제외
+//        if(!member.isVerificationState()){
+//            throw new IllegalStateException("이메일 인증을 진행해주세요");
+//        }
+
         // 1. username + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
