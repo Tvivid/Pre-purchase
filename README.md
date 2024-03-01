@@ -30,6 +30,12 @@ docker-compose up --build
 <br>
 <br>
 
+
+## ERD
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fc0260aa-8be5-4673-9e06-b0bdf0d717aa/3bab835c-cab9-472d-94e6-4f30ef196cce/Untitled.png)
+
+<br>
+<br>
 ## API 명세서
 
 https://documenter.getpostman.com/view/32588839/2sA2xb5EoK
