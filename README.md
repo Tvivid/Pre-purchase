@@ -32,7 +32,7 @@ docker-compose up --build
 
 
 ## ERD
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fc0260aa-8be5-4673-9e06-b0bdf0d717aa/3bab835c-cab9-472d-94e6-4f30ef196cce/Untitled.png)
+![ERD](https://github.com/Tvivid/Pre-purchase/assets/105791165/30480ee9-f2c7-4baf-88c9-70d827f9d0ec)
 
 <br>
 <br>
