@@ -69,15 +69,7 @@ public class MemberController {
     public void verifyUser(@RequestParam("email") String email, @RequestParam("token") String token){
         memberService.verifyUser(email,token);
     }
-
-    @GetMapping("internal/member")
-    public Long getMember(@RequestParam("token") String token){
-        Long member = memberService.findUser(token);
-        return member;
-    }
-
-
-
+    
 
 
 }
