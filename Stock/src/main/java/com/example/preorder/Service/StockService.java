@@ -2,7 +2,6 @@ package com.example.preorder.Service;
 
 import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Dto.StockDTO;
-import com.example.preorder.Entity.Product;
 import com.example.preorder.Entity.Stock;
 import com.example.preorder.Exception.CustomException;
 import com.example.preorder.Repository.StockRepository;

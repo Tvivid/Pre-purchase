@@ -2,8 +2,10 @@ package com.example.preorder.Service;
 
 import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Dto.ProductDTO;
+import com.example.preorder.Dto.StockDTO;
 import com.example.preorder.Entity.Product;
 import com.example.preorder.Exception.CustomException;
+import com.example.preorder.Feign.StockFeignClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final UserFeignClient userFeignClient;
+
+    private final StockFeignClient stockFeignClient;
 
 
 
@@ -47,6 +51,13 @@ public class ProductService {
 
         productRepository.save(product);
 
+        Long productId=product.getId();
+        //문제가 있으면 id를 가져오는 부분에서 문제
+        StockDTO stockDTO = StockDTO.builder()
+                .productId(productId)
+                .quantity(stock)
+                .build();
+        stockFeignClient.saveStock(stockDTO);
     }
 
     @Transactional
