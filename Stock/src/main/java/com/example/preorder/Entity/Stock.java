@@ -29,6 +29,14 @@ public class Stock {
         return stock;
     }
 
+    public void subStock(Long quantity){
+        this.stock-=quantity;
+    }
+
+    public void addStock(Long quantity){
+        this.stock+=quantity;
+    }
+
 
 
 

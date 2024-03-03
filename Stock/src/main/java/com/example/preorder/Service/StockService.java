@@ -44,7 +44,7 @@ public class StockService {
         stock.subStock(orderDTO.getQuantity());
     }
     @Transactional
-    public void subStock(OrderDTO orderDTO){
+    public void addStock(OrderDTO orderDTO){
         Stock stock = stockRepository.findByProductId(orderDTO.getProductId())
                 .orElseThrow(()->new CustomException());
 
