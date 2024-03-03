@@ -1,5 +1,6 @@
 package com.example.preorder.Entity;
 
+import com.example.preorder.Dto.StockDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,4 +20,17 @@ public class Stock {
     private Long productId;
 
     private Long stock;
+
+    public static Stock toSaveEntity(StockDTO stockDTO){
+        Stock stock = Stock.builder()
+                .productId(stockDTO.getProductId())
+                .stock(stockDTO.getQuantity())
+                .build();
+        return stock;
+    }
+
+
+
+
+
 }
