@@ -5,6 +5,7 @@ import com.example.preorder.Dto.StockDTO;
 import com.example.preorder.Entity.Product;
 import com.example.preorder.Entity.Stock;
 import com.example.preorder.Exception.CustomException;
+import com.example.preorder.Repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
