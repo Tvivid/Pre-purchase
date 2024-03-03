@@ -5,11 +5,10 @@ import com.example.preorder.Dto.OrderDTO;
 import com.example.preorder.Entity.*;
 import com.example.preorder.Entity.type.PurchaseStatus;
 import com.example.preorder.Exception.CustomException;
-import com.example.preorder.Feign.ProductClient;
+import com.example.preorder.Feign.StockFeignClient;
 import com.example.preorder.Feign.UserFeignClient;
 import com.example.preorder.Repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class PurchaseService {
 
     private final OrderRepository orderRepository;
     private final UserFeignClient userFeignClient;
-    private final ProductClient productClient;
+    private final StockFeignClient stockFeignClient;
 
 
 
@@ -46,13 +45,13 @@ public class PurchaseService {
 
     //재고량 유효성 검사
     public void stockValidation(OrderDTO orderDTO){
-        Long stock= productClient.checkStock(orderDTO.getProductId());
+        Long stock= stockFeignClient.checkStock(orderDTO.getProductId());
 
         if(stock< orderDTO.getQuantity()){
             throw new CustomException();
         }
         //재고량 감소
-        productClient.subStock(orderDTO);
+        stockFeignClient.subStock(orderDTO);
     }
 
     //주문 리스트
@@ -75,7 +74,7 @@ public class PurchaseService {
         OrderDTO orderDTO=OrderDTO.entityToOrderDTO(orders);
 
         //재고량 복구
-        productClient.addStock(orderDTO);
+        stockFeignClient.addStock(orderDTO);
 
     }
 
@@ -96,7 +95,7 @@ public class PurchaseService {
         OrderDTO orderDTO=OrderDTO.entityToOrderDTO(orders);
 
         //재고량 복구
-        productClient.addStock(orderDTO);
+        stockFeignClient.addStock(orderDTO);
 
         return "잔액이 부족합니다";
         

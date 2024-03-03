@@ -7,12 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Set;
-
-@FeignClient(name = "product", url = "http://localhost:8081/v1/internal/product")
-public interface ProductClient {
-
-
+@FeignClient(name = "stock",url = "http://localhost:8084/v1/internal/stock")
+public interface StockFeignClient {
     @GetMapping
     Long checkStock(@RequestParam("productId") Long productId);
 
