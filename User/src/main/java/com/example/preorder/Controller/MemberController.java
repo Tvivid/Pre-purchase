@@ -69,7 +69,7 @@ public class MemberController {
     public void verifyUser(@RequestParam("email") String email, @RequestParam("token") String token){
         memberService.verifyUser(email,token);
     }
-    
+
 
 
 }

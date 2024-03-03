@@ -1,0 +1,35 @@
+package com.example.preorder.Controller;
+
+import com.example.preorder.Dto.OrderDTO;
+import com.example.preorder.Service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@RestController
+@RequestMapping("/v1/internal/product")
+@RequiredArgsConstructor
+public class InternalProductController {
+
+    @Autowired
+    private ProductService productService;
+
+
+
+    @GetMapping
+    Long checkStock(@RequestParam Long productId){
+        Long stock = productService.checkStock(productId);
+        return stock;
+    };
+
+    @PostMapping("/subStock")
+    void subStock(@RequestBody OrderDTO orderDTO){
+        productService.subStock(orderDTO);
+
+    };
+
+    @PostMapping("/addStock")
+    void addStock(@RequestBody OrderDTO orderDTO){
+        productService.addStock(orderDTO);
+
+    };
+}
