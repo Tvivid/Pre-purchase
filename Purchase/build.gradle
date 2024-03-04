@@ -34,7 +34,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-
+//    implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.0")
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 

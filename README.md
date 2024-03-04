@@ -30,6 +30,12 @@ docker-compose up --build
 <br>
 <br>
 
+## 시스템 구조
+
+
+<br>
+<br>
+
 
 ## ERD
 ![ERD](https://github.com/Tvivid/Pre-purchase/assets/105791165/30480ee9-f2c7-4baf-88c9-70d827f9d0ec)
