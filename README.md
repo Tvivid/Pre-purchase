@@ -30,7 +30,7 @@ docker-compose up --build
 <br>
 <br>
 
-## 시스템 구조
+## 시스템 구조도
 
 
 <br>
